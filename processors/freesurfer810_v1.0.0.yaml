@@ -1,0 +1,63 @@
+# https://github.com/baxpr/freesurfer810-iis
+---
+procyamlversion: 3.0.0-dev.0
+
+containers:
+  - name: freesurfer
+    path: freesurfer810-iis_v1.0.0.sif
+    source: docker://baxterprogers/freesurfer810-iis:v1.0.0
+requirements:
+  walltime: 2-0
+  memory: 32G
+jobtemplate: job_template_v3.txt
+
+inputs:
+  xnat:
+    
+    scans:
+      - name: scan_t1
+        types: cs_T1W_3D_TFE_32 channel,T1,T1_PGPP
+        skip_unusable: True
+        needs_qc: False
+        resources:
+          - {resource: NIFTI, ftype: FILE, fmatch: '*.nii.gz', fdest: t1.nii.gz}
+
+    attrs:
+      - {varname: project, object: assessor, attr: project}
+      - {varname: subject, object: session, attr: subject_label}
+      - {varname: session, object: session, attr: label}
+      - {varname: scan, object: scan, attr: ID, ref: scan_t1}
+
+outputs:
+  - {path: PDF/Freesurfer-QA.pdf, type: FILE, resource: PDF}
+  - {path: PDF_DETAIL, type: DIR, resource: PDF_DETAIL}
+  - {path: SUBJECT, type: DIR, resource: SUBJECT}
+  - {path: NIFTIS, type: DIR, resource: NIFTIS}
+  - {path: MMhippomaps, type: DIR, resource: MMhippomaps}
+  - {path: APARCSTATS_BA_exvivo, type: DIR, resource: APARCSTATS_BA_exvivo}
+  - {path: APARCSTATS_DKTatlas, type: DIR, resource: APARCSTATS_DKTatlas}
+  - {path: APARCSTATS_a2009s, type: DIR, resource: APARCSTATS_a2009s}
+  - {path: APARCSTATS_aparc, type: DIR, resource: APARCSTATS_aparc}
+  - {path: APARCSTATS_pial, type: DIR, resource: APARCSTATS_pial}
+  - {path: VOLSTATS_std, type: DIR, resource: VOLSTATS_std}
+  - {path: VOLSTATS_highres, type: DIR, resource: VOLSTATS_highres}
+  - {path: SCLIMBIC_QA, type: DIR, resource: SCLIMBIC_QA}
+
+# NextBrain skipped due to memory demands
+#  - {path: NextBrain, type: DIR, resource: NextBrain}
+
+command:
+  type: singularity_run
+  container: freesurfer
+  opts: >-
+    --home $JOBDIR
+    --bind $INDIR:/INPUTS
+    --bind $OUTDIR:/OUTPUTS
+    --bind $JOBDIR:/tmp
+  extraopts: >-
+    --bind /data/mcr/centos7/FS6/license.txt:/usr/local/freesurfer/8.1.0-1/.license
+  args: >-
+    --t1_niigz /INPUTS/t1.nii.gz
+    --subjects_dir /OUTPUTS
+    --label_info "{project} {session} {scan}"
+    --out_dir /OUTPUTS
