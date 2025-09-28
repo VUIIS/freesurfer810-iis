@@ -11,12 +11,13 @@ requirements:
   memory: 32G
 jobtemplate: job_template_v3.txt
 
-# FIXME How to filter? We need 
-#   assr_fs_1 scan_t1 to match scan_t1_1
-#   assr_fs_2 scan_t1 to match scan_t1_2
-
 inputs:
   xnat:
+    filters:
+      - type: match
+        inputs: scan_t1_1,assr_fs_1/scan_t1
+      - type: match
+        inputs: scan_t1_2,assr_fs_2/scan_t1
     sessions:
       - types: v000mo
         scans:
@@ -26,9 +27,7 @@ inputs:
           - name: assr_fs_1
             types: freesurfer800_v2
             resources:
-              - resource: SUBJECT
-                ftype: DIR
-                fdest: v000mo
+              - {resource: SUBJECT, ftype: DIR, fdest: v000mo}
       - types: v024mo
         scans:
           - name: scan_t1_2
@@ -37,9 +36,7 @@ inputs:
           - name: assr_fs_2
             types: freesurfer800_v2
             resources:
-              - resource: SUBJECT
-                ftype: DIR
-                fdest: v024mo
+              - {resource: SUBJECT, ftype: DIR, fdest: v024mo}
 
 outputs:
   - {path: '.', type: DIR, resource: all_outputs}
@@ -56,12 +53,10 @@ command:
     --bind /data/mcr/centos7/FS6/license.txt:/usr/local/freesurfer/8.1.0-1/.license
   args: >-
     bash -c \"
-    echo BPR BEGINNING &&
     export SUBJECTS_DIR=/OUTPUTS &&
     cp -R /INPUTS/v000mo/SUBJECT /OUTPUTS/v000mo &&
     cp -R /INPUTS/v024mo/SUBJECT /OUTPUTS/v024mo &&
-    echo BPR BEFORE BASE &&
     recon-all -base template2 -tp v000mo -tp v024mo -hires -all &&
-    echo BPR BEFORE LONG &&
-    recon-all -long long2 template2 -hires -all
+    recon-all -long v000mo template2 -all
+    recon-all -long v024mo template2 -all
     \"
