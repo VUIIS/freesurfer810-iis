@@ -3,7 +3,7 @@ FROM rockylinux:8.9
 # We need a few additional packages for installations, xvfb, imagemagick, freesurfer
 # procps-ng provides uptime
 RUN yum -y update && \
-    yum -y install wget zip unzip which procps-ng python3 && \
+    yum -y install findutils wget zip unzip which procps-ng python3 && \
     yum -y install epel-release && \
     yum -y install ImageMagick && \
     yum -y install xorg-x11-server-Xvfb xorg-x11-xauth && \
