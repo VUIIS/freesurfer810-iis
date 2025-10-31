@@ -58,5 +58,8 @@ command:
     cp -R /INPUTS/v024mo/SUBJECT /OUTPUTS/v024mo &&
     recon-all -base template2 -tp v000mo -tp v024mo -hires -all &&
     recon-all -long v000mo template2 -all &&
-    recon-all -long v024mo template2 -all
+    recon-all -long v024mo template2 -all &&
+    segment_subregions hippo-amygdala --long-base template2 &&
+    segment_subregions thalamus --long-base template2 &&
+    segment_subregions brainstem --long-base template2
     \"
