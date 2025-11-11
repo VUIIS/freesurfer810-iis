@@ -61,5 +61,8 @@ command:
     recon-all -long v024mo template2 -all &&
     segment_subregions hippo-amygdala --long-base template2 &&
     segment_subregions thalamus --long-base template2 &&
-    segment_subregions brainstem --long-base template2
+    segment_subregions brainstem --long-base template2 &&
+    mri_sclimbic_seg -s template2 --conform --write_qa_stats &&
+    mri_sclimbic_seg -s v000mo.long.template2 --conform --write_qa_stats &&
+    mri_sclimbic_seg -s v024mo.long.template2 --conform --write_qa_stats
     \"
