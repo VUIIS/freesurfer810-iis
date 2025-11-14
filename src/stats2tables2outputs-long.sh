@@ -12,7 +12,6 @@ tmp_dir="${out_dir}"/tmp
 
 mkdir -p "${tmp_dir}"
 
-# FIXME does not seem to be storing for all subjects
 # aseg volumes
 echo "aseg for ${subj_dirs}"
 asegstats2table \
@@ -23,7 +22,6 @@ asegstats2table \
     --stats aseg.stats \
     --tablefile "${tmp_dir}"/aseg.csv
 
-# FIXME sclimbic was not being done - running a new test
 # sclimbic volumes
 asegstats2table \
     --delimiter comma \
@@ -41,7 +39,7 @@ for aparc in aparc aparc.a2009s aparc.pial aparc.DKTatlas BA_exvivo ; do
 	for meas in volume area thickness ; do
 		for hemi in lh rh ; do
 			aparcstats2table --delimiter comma \
-			-m $meas --hemi $hemi -s ${subj_dirs} --parc $aparc \
+			-m $meas --hemi $hemi --subjects ${subj_dirs} --parc $aparc \
 			-t "${tmp_dir}"/"${hemi}-${aparc}-${meas}.csv"
 		done
 	done
@@ -56,6 +54,7 @@ asegstats2table \
     --stats wmparc.stats \
     --tablefile "${tmp_dir}"/wmparc.csv
 
+# FIXME we are here
 # Convert FS CSVs to dax-friendly CSVs
 process_BA_exvivo.py --csv_dir "${tmp_dir}" --out_dir "${out_dir}"/APARCSTATS_BA_exvivo
 process_DKTatlas.py --csv_dir "${tmp_dir}" --out_dir "${out_dir}"/APARCSTATS_DKTatlas

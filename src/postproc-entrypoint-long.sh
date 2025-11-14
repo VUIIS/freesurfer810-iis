@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Entrypoint for post-freesurfer QA report and data reorg
+# Entrypoint for post-freesurfer QA report and data reorg - LONGITUDINAL
 
 # Defaults
 export SUBJECTS_DIR=/OUTPUTS
@@ -30,7 +30,7 @@ echo out_dir      = "${out_dir}"
 
 # Convert FS text stats output to dax-friendly CSV. 
 # Also compute for MM relabeling
-stats2tables2outputs.sh
+stats2tables2outputs-long.sh
 
 # Images for MM relabeling
 #create_MM_labelmaps.sh
