@@ -7,6 +7,7 @@ import numpy
 import os
 import pandas
 import string
+import sys
 
 print(f'Running {__file__}')
 
@@ -37,12 +38,13 @@ thk_lh = pandas.read_csv(os.path.join(args.csv_dir,'lh-BA_exvivo-thickness.csv')
 thk_rh = pandas.read_csv(os.path.join(args.csv_dir,'rh-BA_exvivo-thickness.csv'))
 
 # Get timepoint labels for each and confirm they match
-timepoint = area_lh.iloc[:,0]
-print(pandas.DataFrame(data=timepoint, columns=('timepoint')))
+timepoint = pandas.DataFrame(area_lh.iloc[:,0])
+timepoint.rename(columns={timepoint.columns[0]: 'timepoint'}, inplace=True, errors='raise')
 
 for x in [area_rh, vol_lh, vol_rh, thk_lh, thk_rh]:
-    tp = x.iloc[:,0]
-    if not numpy.all(tp==timepoint):
+    tp = pandas.DataFrame(x.iloc[:,0])
+    tp.rename(columns={tp.columns[0]: 'timepoint'}, inplace=True, errors='raise')
+    if not all(tp==timepoint):
         raise Exception('Timepoint labels not matching')
 
 # Drop first columns (subject label)
@@ -53,9 +55,10 @@ vol_rh = vol_rh.drop(vol_rh.columns[0], axis=1)
 thk_lh = thk_lh.drop(thk_lh.columns[0], axis=1)
 thk_rh = thk_rh.drop(thk_rh.columns[0], axis=1)
 
-# Concatenate
+# Concatenate, adding back the timepoint labels
 aparc = pandas.concat(
     [
+        timepoint,
         area_lh, 
         area_rh, 
         vol_lh, 
@@ -64,16 +67,6 @@ aparc = pandas.concat(
         thk_rh,
     ],
     axis=1)
-
-# Add back the timepoint labels
-aparc = pandas.concat(
-    [
-        pandas.DataFrame(timepoint, columns=['timepoint']),
-        aparc,
-    ],
-    axis=1)
-
-print(aparc)
 
 # Sanitize varnames
 aparc.columns = [sanitize(x) for x in aparc.columns]
@@ -178,17 +171,20 @@ rois = [
     'etiv',
     ]
 vals = list()
-# FIXME the 
+# FIXME not getting two rows of numerical values
 for roi in rois:
     mask = [x==roi for x in aparc.columns]
     if sum(mask)==0:
         print(f'  WARNING - no volume found for ROI {roi}')
+        # FIXME add a whole column not just a value
         vals.append(0)
     elif sum(mask)>1:
         raise Exception(f'Found >1 value for {roi}')
     else:
+        # FIXME append a column not a value
         vals.append(aparc[roi].array[:])
 
+print(vals)
 
 # Make data frame and write to file
 aparcout = pandas.DataFrame([rois, vals])
