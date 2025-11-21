@@ -170,24 +170,20 @@ rois = [
     'brainsegvolnotvent',
     'etiv',
     ]
-vals = list()
-# FIXME not getting two rows of numerical values
+
+# Initialize output with timepoint labels
+vals = timepoint
 for roi in rois:
     mask = [x==roi for x in aparc.columns]
     if sum(mask)==0:
         print(f'  WARNING - no volume found for ROI {roi}')
-        # FIXME add a whole column not just a value
-        vals.append(0)
+        vals[roi] = numpy.zeros(vals[roi].shape)
     elif sum(mask)>1:
         raise Exception(f'Found >1 value for {roi}')
     else:
-        # FIXME append a column not a value
-        vals.append(aparc[roi].array[:])
-
-print(vals)
+        vals[roi] = aparc[roi]
 
 # Make data frame and write to file
-aparcout = pandas.DataFrame([rois, vals])
 os.makedirs(args.out_dir, exist_ok=True)
-aparcout.to_csv(os.path.join(args.out_dir,'BA_exvivo.csv'), 
-    header=False, index=False)
+vals.to_csv(os.path.join(args.out_dir,'BA_exvivo.csv'), 
+    header=True, index=False)
