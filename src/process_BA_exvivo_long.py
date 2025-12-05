@@ -181,7 +181,12 @@ for roi in rois:
     elif sum(mask)>1:
         raise Exception(f'Found >1 value for {roi}')
     else:
-        vals[roi] = aparc[roi]
+        vals = pandas.concat([vals,aparc[roi]], axis=1)
+
+# Check for unexpected ROIs being present
+for srcroi in aparc.columns:
+    if (not srcroi in rois) and (not srcroi=='timepoint'):
+        print(f'  WARNING - unexpected data found for ROI {srcroi}')
 
 # Make data frame and write to file
 os.makedirs(args.out_dir, exist_ok=True)
