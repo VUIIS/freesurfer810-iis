@@ -43,6 +43,7 @@ rois = [
     'midbrain',
     'whole_brainstem',
     ]
+# FIXME we need a timepoint column with timepoint extracted from dir path somehow (or passed in?)
 vals = list()
 for roi in rois:
     mask = [x==roi for x in rois]

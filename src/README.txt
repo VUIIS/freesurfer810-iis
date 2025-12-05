@@ -11,11 +11,9 @@ for subj_dir in ${subj_dirs}; do
     ./process_brainstem_volumes_long.py --subject_dir "${subj_dir}" --out_csv "$(pwd)/../OUTPUTS/longout-postproc/BSvol-${cstr}.csv"
 done
 
-FIXME write this:
-combine_csvs.py $(pwd)/../OUTPUTS/longout-postproc/BSvol*.csv
 
 
-
+./combine_csvs.py --in_csvs $(pwd)/../OUTPUTS/longout-postproc/BSvol*.csv --out_csv $(pwd)/../OUTPUTS/longout-postproc/BSvol-all.csv
 
 
 
