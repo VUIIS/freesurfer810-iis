@@ -1,6 +1,26 @@
 
 Tests:
 
+subj_dirs=$(ls -d $(pwd)/../OUTPUTS/longout/*)
+subj_dirs=${subj_dirs//$'\n'/ }
+
+let c=0
+for subj_dir in ${subj_dirs}; do
+    (( c ++ ))
+    cstr=$(printf "%03d" ${c})
+    ./process_brainstem_volumes_long.py --subject_dir "${subj_dir}" --out_csv "$(pwd)/../OUTPUTS/longout-postproc/BSvol-${cstr}.csv"
+done
+
+FIXME write this:
+combine_csvs.py $(pwd)/../OUTPUTS/longout-postproc/BSvol*.csv
+
+
+
+
+
+
+
+
 export csvdir=$(pwd)/../OUTPUTS/longout-postproc/tmp
 export outdir=$(pwd)/../OUTPUTS/longout-postproc/csvouts
 

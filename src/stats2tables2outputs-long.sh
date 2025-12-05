@@ -54,22 +54,23 @@ asegstats2table \
     --stats wmparc.stats \
     --tablefile "${tmp_dir}"/wmparc.csv
 
-# FIXME we are here
 # Convert FS CSVs to dax-friendly CSVs
-process_BA_exvivo.py --csv_dir "${tmp_dir}" --out_dir "${out_dir}"/APARCSTATS_BA_exvivo
-process_DKTatlas.py --csv_dir "${tmp_dir}" --out_dir "${out_dir}"/APARCSTATS_DKTatlas
-process_a2009s.py --csv_dir "${tmp_dir}" --out_dir "${out_dir}"/APARCSTATS_a2009s
-process_aparc.py --csv_dir "${tmp_dir}" --out_dir "${out_dir}"/APARCSTATS_aparc
-process_pial.py --csv_dir "${tmp_dir}" --out_dir "${out_dir}"/APARCSTATS_pial
+process_BA_exvivo_long.py --csv_dir "${tmp_dir}" --out_dir "${out_dir}"/APARCSTATS_BA_exvivo
+process_DKTatlas_long.py --csv_dir "${tmp_dir}" --out_dir "${out_dir}"/APARCSTATS_DKTatlas
+process_a2009s_long.py --csv_dir "${tmp_dir}" --out_dir "${out_dir}"/APARCSTATS_a2009s
+process_aparc_long.py --csv_dir "${tmp_dir}" --out_dir "${out_dir}"/APARCSTATS_aparc
+process_pial_long.py --csv_dir "${tmp_dir}" --out_dir "${out_dir}"/APARCSTATS_pial
 
-process_aseg.py --aseg_csv "${tmp_dir}"/aseg.csv --out_dir "${out_dir}"/VOLSTATS_std
-process_wmparc.py --wmparc_csv "${tmp_dir}"/wmparc.csv --out_dir "${out_dir}"/VOLSTATS_std
+process_aseg_long.py --aseg_csv "${tmp_dir}"/aseg.csv --out_dir "${out_dir}"/VOLSTATS_std
+process_wmparc_long.py --wmparc_csv "${tmp_dir}"/wmparc.csv --out_dir "${out_dir}"/VOLSTATS_std
 
 # FIXME This overwrites outputs each time through - we need a longitudinal mode
+let c=0
 for subj_dir in ${subj_dirs}; do
-    process_brainstem_volumes.py --subject_dir "${subj_dir}" --out_dir "${out_dir}"/VOLSTATS_highres
-    process_hippamyg_volumes.py --subject_dir "${subj_dir}" --out_dir "${out_dir}"/VOLSTATS_highres
-    process_thalamus_volumes.py --subject_dir "${subj_dir}" --out_dir "${out_dir}"/VOLSTATS_highres
+    (( c ++ ))
+    process_brainstem_volumes.py --subject_dir "${subj_dir}" --out_dir "${out_dir}/BSvol-${c}.csv"
+    #process_hippamyg_volumes.py --subject_dir "${subj_dir}" --out_dir "${out_dir}"/VOLSTATS_highres
+    #process_thalamus_volumes.py --subject_dir "${subj_dir}" --out_dir "${out_dir}"/VOLSTATS_highres
 done
 
 # FIXME prob need long mode below here also
