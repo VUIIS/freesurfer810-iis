@@ -64,14 +64,27 @@ process_pial_long.py --csv_dir "${tmp_dir}" --out_dir "${out_dir}"/APARCSTATS_pi
 process_aseg_long.py --aseg_csv "${tmp_dir}"/aseg.csv --out_dir "${out_dir}"/VOLSTATS_std
 process_wmparc_long.py --wmparc_csv "${tmp_dir}"/wmparc.csv --out_dir "${out_dir}"/VOLSTATS_std
 
-# FIXME This overwrites outputs each time through - we need a longitudinal mode
 let c=0
 for subj_dir in ${subj_dirs}; do
     (( c ++ ))
-    process_brainstem_volumes.py --subject_dir "${subj_dir}" --out_dir "${out_dir}/BSvol-${c}.csv"
-    #process_hippamyg_volumes.py --subject_dir "${subj_dir}" --out_dir "${out_dir}"/VOLSTATS_highres
-    #process_thalamus_volumes.py --subject_dir "${subj_dir}" --out_dir "${out_dir}"/VOLSTATS_highres
+    cstr=$(printf "%03d" ${c})
+
+    ./process_brainstem_volumes_long.py \
+        --subject_dir "${SUBJECTS_DIR}/${subj_dir}" \
+        --timepoint ${subj_dir} \
+        --out_csv "${out_dir}"/BSvol-${cstr}.csv
+
+    ./process_hippamyg_volumes_long.py \
+        --subject_dir "${SUBJECTS_DIR}/${subj_dir}" \
+        --timepoint ${subj_dir} \
+        --out_csv "${out_dir}"/HAvol-${cstr}.csv
+
 done
+
+mkdir -p "${out_dir}"/VOLSTATS_highres
+combine_csvs.py --in_csvs "${out_dir}"/BSvol-*.csv --out_csv "${out_dir}"/VOLSTATS_highres/BSvol.csv
+combine_csvs.py --in_csvs "${out_dir}"/HAvol-*.csv --out_csv "${out_dir}"/VOLSTATS_highres/HAvol.csv
+
 
 # FIXME prob need long mode below here also
 

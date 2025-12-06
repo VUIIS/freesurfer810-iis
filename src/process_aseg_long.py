@@ -119,7 +119,7 @@ for roi in rois:
     elif sum(mask)>1:
         raise Exception(f'Found >1 value for {roi}')
     else:
-        vals = pandas.concat([vals,aseg[roi]], axis=1)
+        vals = pandas.concat([vals, aseg[roi]], axis=1)
 
 # Check for unexpected ROIs being present
 for srcroi in aseg.columns:
@@ -128,5 +128,4 @@ for srcroi in aseg.columns:
 
 # Make data frame and write to file
 os.makedirs(args.out_dir, exist_ok=True)
-vals.to_csv(os.path.join(args.out_dir,'aseg.csv'), 
-    header=True, index=False)
+vals.to_csv(os.path.join(args.out_dir, 'aseg.csv'), header=True, index=False)

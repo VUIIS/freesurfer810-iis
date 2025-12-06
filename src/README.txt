@@ -1,19 +1,19 @@
 
 Tests:
 
-subj_dirs=$(ls -d $(pwd)/../OUTPUTS/longout/*)
+SUBJECTS_DIR=$(pwd)/../OUTPUTS/longout
+subj_dirs=$(ls $SUBJECTS_DIR)
 subj_dirs=${subj_dirs//$'\n'/ }
 
 let c=0
 for subj_dir in ${subj_dirs}; do
     (( c ++ ))
     cstr=$(printf "%03d" ${c})
-    ./process_brainstem_volumes_long.py --subject_dir "${subj_dir}" --out_csv "$(pwd)/../OUTPUTS/longout-postproc/BSvol-${cstr}.csv"
+    ./process_hippamyg_volumes_long.py --subject_dir "${SUBJECTS_DIR}/${subj_dir}" --timepoint ${subj_dir} --out_csv "$(pwd)/../OUTPUTS/longout-postproc/HAvol-${cstr}.csv"
 done
 
 
-
-./combine_csvs.py --in_csvs $(pwd)/../OUTPUTS/longout-postproc/BSvol*.csv --out_csv $(pwd)/../OUTPUTS/longout-postproc/BSvol-all.csv
+./combine_csvs.py --in_csvs $(pwd)/../OUTPUTS/longout-postproc/HAvol*.csv --out_csv $(pwd)/../OUTPUTS/longout-postproc/HAvol.csv
 
 
 

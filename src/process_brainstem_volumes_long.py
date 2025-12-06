@@ -3,12 +3,14 @@
 # Need in path: /usr/local/freesurfer/python/bin
 
 import argparse
+import numpy
 import os
 import pandas
 import string
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--subject_dir', required=True)
+parser.add_argument('--timepoint', required=True)
 parser.add_argument('--out_csv', required=True)
 args = parser.parse_args()
 
@@ -31,8 +33,10 @@ def sanitize(input_string):
 bs = pandas.read_csv(os.path.join(mri_dir,'brainstemSsLabels.long.volumes.txt'),
     sep=' ',header=None)
 
-# Sanitize varnames
+# Sanitize varnames and convert to dataframe
 bs[0] = [sanitize(x) for x in bs[0]]
+bs2 = pandas.DataFrame([numpy.transpose(bs[1])])
+bs2.columns = bs[0].to_list()
 
 # Use known list of desired outputs. Fill any missing (and drop any
 # that are unexpected)
@@ -43,17 +47,16 @@ rois = [
     'midbrain',
     'whole_brainstem',
     ]
-# FIXME we need a timepoint column with timepoint extracted from dir path somehow (or passed in?)
-vals = list()
+vals = pandas.DataFrame([args.timepoint], columns=['timepoint'])
 for roi in rois:
     mask = [x==roi for x in rois]
     if sum(mask)>1:
         raise Exception(f'Found >1 value for {roi}')
     elif sum(mask)==1:
-        vals.append(bs[1].loc[bs[0]==roi].array[0])
+        vals[roi] = bs2[roi].values
     else:
         print(f'  WARNING - no volume found for ROI {roi}')
-        vals.append(0)
+        vals[roi] = numpy.zeros(vals.timepoint.shape)
 
 # Check for unexpected ROIs being present
 for srcroi in bs[0]:
@@ -61,5 +64,4 @@ for srcroi in bs[0]:
         print(f'  WARNING - unexpected data found for ROI {srcroi}')
 
 # Make data frame and write to file
-bsout = pandas.DataFrame([rois, vals])
-bsout.to_csv(args.out_csv, header=False, index=False)
+vals.to_csv(args.out_csv, header=True, index=False)
