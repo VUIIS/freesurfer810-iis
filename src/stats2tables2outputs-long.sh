@@ -79,11 +79,15 @@ for subj_dir in ${subj_dirs}; do
         --timepoint ${subj_dir} \
         --out_csv "${out_dir}"/HAvol-${cstr}.csv
 
+    # FIXME we are here - need sclimbic, sclimbicqc, thalamus
+
 done
 
 mkdir -p "${out_dir}"/VOLSTATS_highres
 combine_csvs.py --in_csvs "${out_dir}"/BSvol-*.csv --out_csv "${out_dir}"/VOLSTATS_highres/BSvol.csv
 combine_csvs.py --in_csvs "${out_dir}"/HAvol-*.csv --out_csv "${out_dir}"/VOLSTATS_highres/HAvol.csv
+# FIXME we are here - need sclimbic, sclimbicqc, thalamus
+
 
 
 # FIXME prob need long mode below here also
