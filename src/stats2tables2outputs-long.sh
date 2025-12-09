@@ -65,6 +65,9 @@ process_aseg_long.py --aseg_csv "${tmp_dir}"/aseg.csv --out_dir "${out_dir}"/VOL
 process_wmparc_long.py --wmparc_csv "${tmp_dir}"/wmparc.csv --out_dir "${out_dir}"/VOLSTATS_std
 process_sclimbic_long.py --sclimbic_csv "${tmp_dir}"/sclimbic.csv --out_dir "${out_dir}"/VOLSTATS_highres
 
+# FIXME need sclimbicqa (here, I think)
+
+
 let c=0
 for subj_dir in ${subj_dirs}; do
     (( c ++ ))
@@ -80,22 +83,21 @@ for subj_dir in ${subj_dirs}; do
         --timepoint ${subj_dir} \
         --out_csv "${out_dir}"/HAvol-${cstr}.csv
 
-    # FIXME we are here - need sclimbic, sclimbicqc, thalamus
+    ./process_thalamus_volumes_long.py \
+        --subject_dir "${SUBJECTS_DIR}/${subj_dir}" \
+        --timepoint ${subj_dir} \
+        --out_csv "${out_dir}"/TNvol-${cstr}.csv
 
 done
 
 mkdir -p "${out_dir}"/VOLSTATS_highres
 combine_csvs.py --in_csvs "${out_dir}"/BSvol-*.csv --out_csv "${out_dir}"/VOLSTATS_highres/BSvol.csv
 combine_csvs.py --in_csvs "${out_dir}"/HAvol-*.csv --out_csv "${out_dir}"/VOLSTATS_highres/HAvol.csv
-# FIXME we are here - need sclimbic, sclimbicqc, thalamus
+combine_csvs.py --in_csvs "${out_dir}"/TNvol-*.csv --out_csv "${out_dir}"/VOLSTATS_highres/TNvol.csv
 
 
 
 # FIXME prob need long mode below here also
-
-# sclimbic outputs (FS sclimbic run has created these csvs already)
-process_sclimbic.py --sclimbic_csv "${tmp_dir}"/sclimbic.csv --out_dir "${out_dir}"/VOLSTATS_highres
-process_sclimbic_qa.py --sclimbic_csvdir "${SUBJECTS_DIR}" --out_dir "${out_dir}"/SCLIMBIC_QA
 
 # Extra computations for MM relabeling of hippocampus subfields
 compute_MM_volumes.py --havol_csv "${out_dir}"/VOLSTATS_highres/HAvol.csv \

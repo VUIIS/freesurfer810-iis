@@ -9,11 +9,11 @@ let c=0
 for subj_dir in ${subj_dirs}; do
     (( c ++ ))
     cstr=$(printf "%03d" ${c})
-    ./process_hippamyg_volumes_long.py --subject_dir "${SUBJECTS_DIR}/${subj_dir}" --timepoint ${subj_dir} --out_csv "$(pwd)/../OUTPUTS/longout-postproc/HAvol-${cstr}.csv"
+    ./process_thalamus_volumes_long.py --subject_dir "${SUBJECTS_DIR}/${subj_dir}" --timepoint ${subj_dir} --out_csv "$(pwd)/../OUTPUTS/longout-postproc/TNvol-${cstr}.csv"
 done
 
 
-./combine_csvs.py --in_csvs $(pwd)/../OUTPUTS/longout-postproc/HAvol*.csv --out_csv $(pwd)/../OUTPUTS/longout-postproc/HAvol.csv
+./combine_csvs.py --in_csvs $(pwd)/../OUTPUTS/longout-postproc/TNvol*.csv --out_csv $(pwd)/../OUTPUTS/longout-postproc/TNvol.csv
 
 
 
@@ -31,15 +31,14 @@ export outdir=$(pwd)/../OUTPUTS/longout-postproc/csvouts
 ./process_aseg_long.py --aseg_csv ${csvdir}/aseg.csv --out_dir ${outdir}
 ./process_wmparc_long.py --wmparc_csv ${csvdir}/wmparc.csv --out_dir ${outdir}
 
-
 ./process_sclimbic_long.py --sclimbic_csv "${csvdir}"/sclimbic.csv --out_dir "${outdir}"
 
 
 These work on a single fs output and need to be combined across timepoints:
 
-process_brainstem_volumes.py
-process_hippamyg_volumes.py
-process_sclimbic.py
+DONE process_brainstem_volumes.py
+DONE process_hippamyg_volumes.py
+DONE (but double check) process_sclimbic.py
 process_sclimbic_qa.py
 process_thalamus_volumes.py
 
