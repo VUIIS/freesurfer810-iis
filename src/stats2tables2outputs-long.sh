@@ -63,11 +63,8 @@ process_pial_long.py --csv_dir "${tmp_dir}" --out_dir "${out_dir}"/APARCSTATS_pi
 
 process_aseg_long.py --aseg_csv "${tmp_dir}"/aseg.csv --out_dir "${out_dir}"/VOLSTATS_std
 process_wmparc_long.py --wmparc_csv "${tmp_dir}"/wmparc.csv --out_dir "${out_dir}"/VOLSTATS_std
-process_sclimbic_long.py --sclimbic_csv "${tmp_dir}"/sclimbic.csv --out_dir "${out_dir}"/VOLSTATS_highres
 
-# FIXME need sclimbicqa (here, I think)
-
-
+# Hi-res segs
 let c=0
 for subj_dir in ${subj_dirs}; do
     (( c ++ ))
@@ -91,6 +88,8 @@ for subj_dir in ${subj_dirs}; do
 done
 
 mkdir -p "${out_dir}"/VOLSTATS_highres
+process_sclimbic_long.py --sclimbic_csv "${tmp_dir}"/sclimbic.csv --out_dir "${out_dir}"/VOLSTATS_highres
+# FIXME need sclimbicqa (here, I think)
 combine_csvs.py --in_csvs "${out_dir}"/BSvol-*.csv --out_csv "${out_dir}"/VOLSTATS_highres/BSvol.csv
 combine_csvs.py --in_csvs "${out_dir}"/HAvol-*.csv --out_csv "${out_dir}"/VOLSTATS_highres/HAvol.csv
 combine_csvs.py --in_csvs "${out_dir}"/TNvol-*.csv --out_csv "${out_dir}"/VOLSTATS_highres/TNvol.csv

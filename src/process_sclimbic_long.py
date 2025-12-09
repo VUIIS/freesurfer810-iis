@@ -75,5 +75,4 @@ for srcroi in sclimbic.columns:
         print(f'  WARNING - unexpected data found for ROI {srcroi}')
 
 # Make data frame and write to file
-os.makedirs(args.out_dir, exist_ok=True)
 vals.to_csv(os.path.join(args.out_dir, 'sclimbic.csv'), header=True, index=False)
