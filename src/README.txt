@@ -32,6 +32,8 @@ export outdir=$(pwd)/../OUTPUTS/longout-postproc/csvouts
 ./process_wmparc_long.py --wmparc_csv ${csvdir}/wmparc.csv --out_dir ${outdir}
 
 
+./process_sclimbic_long.py --sclimbic_csv "${csvdir}"/sclimbic.csv --out_dir "${outdir}"
+
 
 These work on a single fs output and need to be combined across timepoints:
 

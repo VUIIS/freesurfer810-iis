@@ -63,6 +63,7 @@ process_pial_long.py --csv_dir "${tmp_dir}" --out_dir "${out_dir}"/APARCSTATS_pi
 
 process_aseg_long.py --aseg_csv "${tmp_dir}"/aseg.csv --out_dir "${out_dir}"/VOLSTATS_std
 process_wmparc_long.py --wmparc_csv "${tmp_dir}"/wmparc.csv --out_dir "${out_dir}"/VOLSTATS_std
+process_sclimbic_long.py --sclimbic_csv "${tmp_dir}"/sclimbic.csv --out_dir "${out_dir}"/VOLSTATS_highres
 
 let c=0
 for subj_dir in ${subj_dirs}; do
