@@ -89,11 +89,10 @@ done
 
 mkdir -p "${out_dir}"/VOLSTATS_highres
 process_sclimbic_long.py --sclimbic_csv "${tmp_dir}"/sclimbic.csv --out_dir "${out_dir}"/VOLSTATS_highres
-# FIXME need sclimbicqa (here, I think)
+process_sclimbic_long_qa.py --sclimbic_csvdir "${out_dir}" --out_dir "${out_dir}"/SCLIMBIC_QA
 combine_csvs.py --in_csvs "${out_dir}"/BSvol-*.csv --out_csv "${out_dir}"/VOLSTATS_highres/BSvol.csv
 combine_csvs.py --in_csvs "${out_dir}"/HAvol-*.csv --out_csv "${out_dir}"/VOLSTATS_highres/HAvol.csv
 combine_csvs.py --in_csvs "${out_dir}"/TNvol-*.csv --out_csv "${out_dir}"/VOLSTATS_highres/TNvol.csv
-
 
 
 # FIXME prob need long mode below here also

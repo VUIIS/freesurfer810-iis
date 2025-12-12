@@ -39,7 +39,9 @@ inputs:
               - {resource: SUBJECT, ftype: DIR, fdest: v024mo}
 
 outputs:
-  - {path: '.', type: DIR, resource: all_outputs}
+  - {path: v000mo.long.template2, type: DIR, resource: v000mo_long}
+  - {path: v024mo.long.template2, type: DIR, resource: v024mo_long}
+  - {path: template2, type: DIR, resource: template}
 
 command:
   type: singularity_exec
