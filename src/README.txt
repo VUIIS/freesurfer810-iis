@@ -1,19 +1,23 @@
 
 Tests:
 
-SUBJECTS_DIR=$(pwd)/../OUTPUTS/longout
-subj_dirs=$(ls $SUBJECTS_DIR)
-subj_dirs=${subj_dirs//$'\n'/ }
+#SUBJECTS_DIR=$(pwd)/../OUTPUTS/longout
+#subj_dirs=$(ls $SUBJECTS_DIR)
+#subj_dirs=${subj_dirs//$'\n'/ }
+subj_dirs="v000mo.long.template2 v024mo.long.template2"
 
 let c=0
 for subj_dir in ${subj_dirs}; do
     (( c ++ ))
     cstr=$(printf "%03d" ${c})
-    ./process_thalamus_volumes_long.py --subject_dir "${SUBJECTS_DIR}/${subj_dir}" --timepoint ${subj_dir} --out_csv "$(pwd)/../OUTPUTS/longout-postproc/TNvol-${cstr}.csv"
+    ./compute_MM_volumes_long.py \
+        --havol_csv "$(pwd)/../OUTPUTS/longout-postproc/HAvol-${cstr}.csv" \
+        --timepoint ${subj_dir} \
+        --out_csv "$(pwd)/../OUTPUTS/longout-postproc/MMhippvol-${cstr}.csv"
 done
 
 
-./combine_csvs.py --in_csvs $(pwd)/../OUTPUTS/longout-postproc/TNvol*.csv --out_csv $(pwd)/../OUTPUTS/longout-postproc/TNvol.csv
+./combine_csvs.py --in_csvs $(pwd)/../OUTPUTS/longout-postproc/MMhippvol*.csv --out_csv $(pwd)/../OUTPUTS/longout-postproc/MMhippvol.csv
 
 
 

@@ -6,6 +6,7 @@
 
 echo stats2tables2outputs
 
+# FIXME we need a list of the long out dirs only, not anything else that might be in SUBJECTS_DIR
 subj_dirs=$(ls "${SUBJECTS_DIR}")
 subj_dirs=${subj_dirs//$'\n'/ }
 tmp_dir="${out_dir}"/tmp
@@ -88,11 +89,12 @@ for subj_dir in ${subj_dirs}; do
 done
 
 mkdir -p "${out_dir}"/VOLSTATS_highres
-process_sclimbic_long.py --sclimbic_csv "${tmp_dir}"/sclimbic.csv --out_dir "${out_dir}"/VOLSTATS_highres
-process_sclimbic_long_qa.py --sclimbic_csvdir "${out_dir}" --out_dir "${out_dir}"/SCLIMBIC_QA
 combine_csvs.py --in_csvs "${out_dir}"/BSvol-*.csv --out_csv "${out_dir}"/VOLSTATS_highres/BSvol.csv
 combine_csvs.py --in_csvs "${out_dir}"/HAvol-*.csv --out_csv "${out_dir}"/VOLSTATS_highres/HAvol.csv
 combine_csvs.py --in_csvs "${out_dir}"/TNvol-*.csv --out_csv "${out_dir}"/VOLSTATS_highres/TNvol.csv
+
+process_sclimbic_long.py --sclimbic_csv "${tmp_dir}"/sclimbic.csv --out_dir "${out_dir}"/VOLSTATS_highres
+process_sclimbic_long_qa.py --sclimbic_csvdir "${out_dir}" --out_dir "${out_dir}"/SCLIMBIC_QA
 
 
 # FIXME prob need long mode below here also
