@@ -35,9 +35,6 @@ stats2tables2outputs-long.sh
 # Images for MM relabeling
 #create_MM_labelmaps.sh
 
-# Convert some images to Nifti for convenience
-#nii_convert.sh
-
 # Make screenshots and PDFs
 #xwrapper.sh make_pdf.sh
 

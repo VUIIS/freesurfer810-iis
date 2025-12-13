@@ -6,9 +6,13 @@
 
 echo stats2tables2outputs
 
-# FIXME we need a list of the long out dirs only, not anything else that might be in SUBJECTS_DIR
-subj_dirs=$(ls "${SUBJECTS_DIR}")
+# Find longitudinal subject dirs only
+cd "${SUBJECTS_DIR}"
+subj_dirs=$(ls -d *.long.*)
+cd -
 subj_dirs=${subj_dirs//$'\n'/ }
+
+# CSV working files location
 tmp_dir="${out_dir}"/tmp
 
 mkdir -p "${tmp_dir}"
@@ -101,6 +105,6 @@ combine_csvs.py --in_csvs "${out_dir}"/TNvol-*.csv --out_csv "${out_dir}"/VOLSTA
 combine_csvs.py --in_csvs "${out_dir}"/MMhippvol-*.csv --out_csv "${out_dir}"/VOLSTATS_highres/MMhippvol.csv
 
 process_sclimbic_long.py --sclimbic_csv "${tmp_dir}"/sclimbic.csv --out_dir "${out_dir}"/VOLSTATS_highres
-process_sclimbic_long_qa.py --sclimbic_csvdir "${out_dir}" --out_dir "${out_dir}"/SCLIMBIC_QA
+process_sclimbic_qa_long.py --sclimbic_csvdir "${SUBJECTS_DIR}" --out_dir "${out_dir}"/SCLIMBIC_QA
 
 

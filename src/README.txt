@@ -1,6 +1,13 @@
 
 Tests:
 
+export PATH=$(pwd):$PATH
+export SUBJECTS_DIR=$(pwd)/../OUTPUTS/longout
+export out_dir=$(pwd)/../OUTPUTS/longout-postproc
+./stats2tables2outputs-long.sh
+
+
+
 #SUBJECTS_DIR=$(pwd)/../OUTPUTS/longout
 #subj_dirs=$(ls $SUBJECTS_DIR)
 #subj_dirs=${subj_dirs//$'\n'/ }
@@ -40,18 +47,5 @@ export outdir=$(pwd)/../OUTPUTS/longout-postproc/csvouts
 
 ./process_sclimbic_qa_long.py --sclimbic_csvdir $(pwd)/../OUTPUTS/longout --out_dir $(pwd)/../OUTPUTS/SCLIMBIC_QA
 
-These work on a single fs output and need to be combined across timepoints:
 
-DONE process_brainstem_volumes.py
-DONE process_hippamyg_volumes.py
-DONE (but double check) process_sclimbic.py
-process_sclimbic_qa.py
-process_thalamus_volumes.py
-
-
-
-
-Not sure:
-
-compute_MM_volumes.py
 
