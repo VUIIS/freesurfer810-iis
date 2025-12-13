@@ -86,20 +86,21 @@ for subj_dir in ${subj_dirs}; do
         --timepoint ${subj_dir} \
         --out_csv "${out_dir}"/TNvol-${cstr}.csv
 
+    ./compute_MM_volumes_long.py \
+        --havol_csv "${out_dir}"/HAvol-${cstr}.csv \
+        --timepoint ${subj_dir} \
+        --out_csv "${out_dir}"/MMhippvol-${cstr}.csv
+
 done
 
 mkdir -p "${out_dir}"/VOLSTATS_highres
+
 combine_csvs.py --in_csvs "${out_dir}"/BSvol-*.csv --out_csv "${out_dir}"/VOLSTATS_highres/BSvol.csv
 combine_csvs.py --in_csvs "${out_dir}"/HAvol-*.csv --out_csv "${out_dir}"/VOLSTATS_highres/HAvol.csv
 combine_csvs.py --in_csvs "${out_dir}"/TNvol-*.csv --out_csv "${out_dir}"/VOLSTATS_highres/TNvol.csv
+combine_csvs.py --in_csvs "${out_dir}"/MMhippvol-*.csv --out_csv "${out_dir}"/VOLSTATS_highres/MMhippvol.csv
 
 process_sclimbic_long.py --sclimbic_csv "${tmp_dir}"/sclimbic.csv --out_dir "${out_dir}"/VOLSTATS_highres
 process_sclimbic_long_qa.py --sclimbic_csvdir "${out_dir}" --out_dir "${out_dir}"/SCLIMBIC_QA
 
-
-# FIXME prob need long mode below here also
-
-# Extra computations for MM relabeling of hippocampus subfields
-compute_MM_volumes.py --havol_csv "${out_dir}"/VOLSTATS_highres/HAvol.csv \
-    --stats_dir "${out_dir}"/VOLSTATS_highres
 

@@ -97,6 +97,8 @@ for hemi in ['lh', 'rh']:
         vols[f'{hemi}_hippocampal_tail'].array[0]
         )
     
-# FIXME add timepoint in first column
+# Sdd timepoint in first column and write to file
+mmregions.insert(0, 'timepoint')
+mmvols.insert(0, args.timepoint)
 mmdata = pandas.DataFrame([mmregions,mmvols])
 mmdata.to_csv(args.out_csv, index=False, header=False)

@@ -17,7 +17,7 @@ for subj_dir in ${subj_dirs}; do
 done
 
 
-./combine_csvs.py --in_csvs $(pwd)/../OUTPUTS/longout-postproc/MMhippvol*.csv --out_csv $(pwd)/../OUTPUTS/longout-postproc/MMhippvol.csv
+./combine_csvs.py --in_csvs $(pwd)/../OUTPUTS/longout-postproc/MMhippvol-*.csv --out_csv $(pwd)/../OUTPUTS/longout-postproc/MMhippvol.csv
 
 
 
