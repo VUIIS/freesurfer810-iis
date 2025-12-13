@@ -1,6 +1,17 @@
 
 Tests:
 
+subj_dirs=$(ls -d ${SUBJECTS_DIR}/*.long.*)
+subj_dirs=${subj_dirs//$'\n'/ }
+for subj_dir in $subj_dirs; do
+    export subj_dir
+    ./create_MM_labelmaps_long.sh
+done
+
+
+
+
+
 export PATH=$(pwd):$PATH
 export SUBJECTS_DIR=$(pwd)/../OUTPUTS/longout
 export out_dir=$(pwd)/../OUTPUTS/longout-postproc

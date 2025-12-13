@@ -32,8 +32,13 @@ echo out_dir      = "${out_dir}"
 # Also compute for MM relabeling
 stats2tables2outputs-long.sh
 
-# Images for MM relabeling
-#create_MM_labelmaps.sh
+# Images with MM relabeling (after finding longitudinal subject dirs only)
+subj_dirs=$(ls -d ${SUBJECTS_DIR}/*.long.*)
+subj_dirs=${subj_dirs//$'\n'/ }
+for subj_dir in $subj_dirs; do
+    export subj_dir
+    create_MM_labelmaps_long.sh
+done
 
 # Make screenshots and PDFs
 #xwrapper.sh make_pdf.sh
