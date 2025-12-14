@@ -1,6 +1,9 @@
 
 Tests:
 
+
+
+
 subj_dirs=$(ls -d ${SUBJECTS_DIR}/*.long.*)
 subj_dirs=${subj_dirs//$'\n'/ }
 for subj_dir in $subj_dirs; do

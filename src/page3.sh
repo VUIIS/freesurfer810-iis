@@ -11,6 +11,9 @@
 
 img_nu="${mri_dir}"/nu.mgz
 img_thal="${mri_dir}"/ThalamicNuclei.mgz
+if [[ ! -f "${img_thal}" ]]; do
+    img_thal="${mri_dir}"/ThalamicNuclei.long.mgz
+done
 img_aseg="${mri_dir}"/aseg.mgz
 
 # Get LGN location: left is 8109, right is 8209
@@ -137,7 +140,7 @@ montage -mode concatenate \
 # Add info
 # 8.5 x 11 at 144dpi is 1224 x 1584
 # inside 15px border is 1194 x 1554
-convert \
+magick convert \
     -size 1224x1584 xc:white \
     -gravity center \( twenty.png -resize 1194x1554 \) -composite \
     -gravity NorthEast -pointsize 24 -annotate +20+50 "ThalamicNuclei" \

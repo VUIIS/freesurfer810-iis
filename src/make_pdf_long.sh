@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 #
 # Produce PDF reports
+#
+# Needs SUBJECTS_DIR, out_dir
 
 # Find longitudinal subject dirs
 subj_dirs=$(ls -d ${SUBJECTS_DIR}/*.long.*)
