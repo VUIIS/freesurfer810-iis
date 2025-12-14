@@ -4,8 +4,8 @@ procyamlversion: 3.0.0-dev.0
 
 containers:
   - name: freesurfer
-    path: freesurfer810-iis_v1.0.0.sif
-    source: docker://baxterprogers/freesurfer810-iis:v1.0.0
+    path: freesurfer810-iis_v2.0.0.sif
+    source: docker://baxterprogers/freesurfer810-iis:v2.0.0
 requirements:
   walltime: 4-0
   memory: 32G
@@ -85,7 +85,7 @@ command:
     segment_subregions brainstem --long-base template2 &&
     mri_sclimbic_seg -s v000mo.long.template2 v024mo.long.template2 --conform --write_qa_stats &&
     postproc-entrypoint-long.sh
-      --subjects_dir "${SUBJECTS_DIR}"
+      --subjects_dir /OUTPUTS
       --label_info "{project} {subject}"
       --out_dir /OUTPUTS
     \"
