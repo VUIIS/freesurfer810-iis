@@ -41,9 +41,5 @@ for subj_dir in $subj_dirs; do
 done
 
 # Make screenshots and PDFs
-#xwrapper.sh make_pdf.sh
-
-# Clean up SUBJECT dir
-#rm -fr "${SUBJECTS_DIR}"/SUBJECT/trash
-#rm -fr "${SUBJECTS_DIR}"/SUBJECT/tmp
+xwrapper.sh make_pdf_long.sh
 

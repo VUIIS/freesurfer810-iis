@@ -13,12 +13,15 @@ jobtemplate: job_template_v3.txt
 
 inputs:
   xnat:
+
     filters:
       - type: match
         inputs: scan_t1_1,assr_fs_1/scan_t1
       - type: match
         inputs: scan_t1_2,assr_fs_2/scan_t1
+
     sessions:
+
       - types: v000mo
         scans:
           - name: scan_t1_1
@@ -28,6 +31,7 @@ inputs:
             types: freesurfer800_v2
             resources:
               - {resource: SUBJECT, ftype: DIR, fdest: v000mo}
+
       - types: v024mo
         scans:
           - name: scan_t1_2
@@ -38,10 +42,25 @@ inputs:
             resources:
               - {resource: SUBJECT, ftype: DIR, fdest: v024mo}
 
+    attrs:
+      - {varname: project, object: assessor, attr: project}
+      - {varname: subject, object: assessor, attr: subject_label}
+
 outputs:
+  - {path: PDF/Freesurfer-QA.pdf, type: FILE, resource: PDF}
+  - {path: PDF_DETAIL, type: DIR, resource: PDF_DETAIL}
   - {path: v000mo.long.template2, type: DIR, resource: v000mo_long}
   - {path: v024mo.long.template2, type: DIR, resource: v024mo_long}
   - {path: template2, type: DIR, resource: template}
+  - {path: APARCSTATS_BA_exvivo, type: DIR, resource: APARCSTATS_BA_exvivo}
+  - {path: APARCSTATS_DKTatlas, type: DIR, resource: APARCSTATS_DKTatlas}
+  - {path: APARCSTATS_a2009s, type: DIR, resource: APARCSTATS_a2009s}
+  - {path: APARCSTATS_aparc, type: DIR, resource: APARCSTATS_aparc}
+  - {path: APARCSTATS_pial, type: DIR, resource: APARCSTATS_pial}
+  - {path: VOLSTATS_std, type: DIR, resource: VOLSTATS_std}
+  - {path: VOLSTATS_highres, type: DIR, resource: VOLSTATS_highres}
+  - {path: SCLIMBIC_QA, type: DIR, resource: SCLIMBIC_QA}
+
 
 command:
   type: singularity_exec
@@ -64,5 +83,9 @@ command:
     segment_subregions hippo-amygdala --long-base template2 &&
     segment_subregions thalamus --long-base template2 &&
     segment_subregions brainstem --long-base template2 &&
-    mri_sclimbic_seg -s v000mo.long.template2 v024mo.long.template2 --conform --write_qa_stats
+    mri_sclimbic_seg -s v000mo.long.template2 v024mo.long.template2 --conform --write_qa_stats &&
+    postproc-entrypoint-long.sh
+      --subjects_dir "${SUBJECTS_DIR}"
+      --label_info "{project} {subject}"
+      --out_dir /OUTPUTS
     \"
