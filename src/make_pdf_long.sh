@@ -49,9 +49,9 @@ export label_info="${label_info_orig}"
 
 mkdir -p "${out_dir}"/PDF
 magick \
-    "${tmp_dir}"/Freesurfer-QA-*.pdf \
+    "${tmp_dir}"/Freesurfer-QA-???.pdf \
     "${out_dir}"/PDF/Freesurfer-QA.pdf
 
 magick \
-    "${tmp_dir}"/Freesurfer-QA-detailed-*.pdf \
+    "${tmp_dir}"/Freesurfer-QA-detailed-???.pdf \
     "${out_dir}"/PDF_DETAIL/Freesurfer-QA-detailed.pdf
