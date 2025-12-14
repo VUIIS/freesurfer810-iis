@@ -17,6 +17,7 @@ export XDG_RUNTIME_DIR="${tmp_dir}"/runtime-root
 
 # Make screenshots and PDFs
 export the_date=$(date)
+export label_info_orig="${label_info}"
 let c=0
 for subj_dir in ${subj_dirs}; do
 
@@ -26,25 +27,31 @@ for subj_dir in ${subj_dirs}; do
     export subj_dir
     export mri_dir="${subj_dir}"/mri
     export surf_dir="${subj_dir}"/surf
+    export label_info="${label_info_orig} $(basename ${subj_dir})"
 
     page1.sh
     page2.sh
     page3.sh
     page4.sh
-    convert \
+    magick \
         "${tmp_dir}"/page1.png \
         "${tmp_dir}"/page2.png \
         "${tmp_dir}"/page3.png \
         "${tmp_dir}"/page4.png \
         "${tmp_dir}"/Freesurfer-QA-${cstr}.pdf
 
+    make_slice_screenshots.sh
+    mv "${out_dir}"/PDF_DETAIL/Freesurfer-QA-detailed.pdf "${tmp_dir}"/Freesurfer-QA-detailed-${cstr}.pdf 
+
 done
+export label_info="${label_info_orig}"
+
 
 mkdir -p "${out_dir}"/PDF
-convert \
+magick \
     "${tmp_dir}"/Freesurfer-QA-*.pdf \
     "${out_dir}"/PDF/Freesurfer-QA.pdf
 
-
-# Detailed PDF
-#make_slice_screenshots.sh
+magick \
+    "${tmp_dir}"/Freesurfer-QA-detailed-*.pdf \
+    "${out_dir}"/PDF_DETAIL/Freesurfer-QA-detailed.pdf

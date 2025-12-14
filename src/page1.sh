@@ -19,7 +19,7 @@ for p in \
 lh_lat_pial lh_med_pial rh_lat_pial rh_med_pial \
 lh_lat_white lh_med_white rh_lat_white rh_med_white \
 ; do
-	magick convert ${p}.png \
+	magick ${p}.png \
 	-fill none -draw "color 0,0 floodfill" -background white \
 	-trim -bordercolor white -border 20x20 -resize 400x400 \
 	${p}.png
@@ -39,7 +39,7 @@ montage -mode concatenate \
 # Add info
 # 8.5 x 11 at 144dpi is 1224 x 1584
 # inside 15px border is 1194 x 1554
-magick convert \
+magick \
     -size 1224x1584 xc:white \
     -gravity South \( eight.png -resize 1194x1194 -geometry +0+100 \) -composite \
     -gravity NorthEast -pointsize 20 -annotate +20+50 "${cnrtxt}" \
