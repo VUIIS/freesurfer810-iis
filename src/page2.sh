@@ -39,7 +39,7 @@ done
 
 # Trim, change background to white, resize
 for p in axi_*png cor_*png ; do
-	magick ${p} \
+	convert ${p} \
 	-fuzz 5% -fill none -draw "color 0,0 floodfill" -background white \
 	${p}
 done
@@ -57,7 +57,7 @@ montage -mode concatenate \
 # Add info
 # 8.5 x 11 at 144dpi is 1224 x 1584
 # inside 15px border is 1194 x 1554
-magick \
+convert \
     -size 1224x1584 xc:white \
     -gravity center \( twelve.png -resize 1194x1454 \) -geometry +0+0 -composite \
     -gravity NorthEast -pointsize 24 -annotate +20+50 "recon-all" \

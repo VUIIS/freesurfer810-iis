@@ -140,7 +140,7 @@ montage -mode concatenate \
 # Add info
 # 8.5 x 11 at 144dpi is 1224 x 1584
 # inside 15px border is 1194 x 1554
-magick \
+convert \
     -size 1224x1584 xc:white \
     -gravity center \( twenty.png -resize 1194x1554 \) -composite \
     -gravity NorthEast -pointsize 24 -annotate +20+50 "ThalamicNuclei" \

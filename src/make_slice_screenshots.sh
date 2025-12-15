@@ -48,7 +48,7 @@ function slice {
         freeview -v ${mri_dir}/nu.mgz:visible=1:grayscale=0,165 \
             -viewsize 400 400 --layout 1 --zoom 1.15 --viewport ${viewport} \
             -ras $ras -ss ${f1}
-        magick ${f1} -pointsize 18 -fill white -annotate +10+20 "${viewport} = ${s} mm" ${f1}
+        convert ${f1} -pointsize 18 -fill white -annotate +10+20 "${viewport} = ${s} mm" ${f1}
         freeview -v ${mri_dir}/nu.mgz:visible=1:grayscale=0,165 \
             -viewsize 400 400 --layout 1 --zoom 1.15 --viewport ${viewport} \
             -v aseg.sub.mgz:visible=1:colormap=lut \
@@ -71,7 +71,7 @@ montage -mode concatenate z_???.png -border 5 -bordercolor white -tile 2x3 -qual
 
 # Pad and annotate with assessor name
 for i in ?_mont_???.png; do    
-    magick \
+    convert \
         -size 1224x1584 xc:white \
         -gravity Center \( ${i} -resize 1194x1454 -geometry +0+0 \) -composite \
         -gravity SouthEast -pointsize 24 -annotate +20+20 "${the_date}" \
@@ -81,7 +81,7 @@ for i in ?_mont_???.png; do
 done
 
 # Trim 3d screenshots
-for i in [lr]h_*.png;do magick $i -fuzz 1% -trim +repage t${i};done
+for i in [lr]h_*.png;do convert $i -fuzz 1% -trim +repage t${i};done
 
 # Create first page, 3Ds
 montage -mode concatenate \
@@ -92,7 +92,7 @@ montage -mode concatenate \
     -tile 3x -quality 100 -background black -gravity center \
     -trim -border 5 -bordercolor black -resize 300x first_page.png
 
-magick \
+convert \
     -size 1224x1584 xc:white \
     -gravity North \( first_page.png -resize 1194x1194 -geometry +0+100 \) -composite \
     -gravity NorthEast -pointsize 24 -annotate +20+50 "QA Summary - recon-all" \
@@ -102,7 +102,7 @@ magick \
     first_page.png
 
 # Concatenate into PDF
-magick \
+convert \
     first_page.png \
     x_mont_???.png y_mont_???.png z_mont_???.png \
     -page letter \

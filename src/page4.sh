@@ -84,7 +84,7 @@ montage -mode concatenate \
     -tile 2x -quality 100 -background black -gravity center \
     -trim -border 10 -bordercolor black -resize 300x page4fig.png
 
-magick page4fig.png \
+convert page4fig.png \
     -background white -resize 1194x1479 -extent 1194x1479 -bordercolor white \
     -border 15 -gravity SouthEast -background white -splice 0x15 -pointsize 24 \
     -annotate +15+10 "${the_date}" \
@@ -96,7 +96,7 @@ magick page4fig.png \
     -gravity NorthEast -pointsize 24 -annotate +15+10 "${label_info}" \
     page4.png
 
-magick \
+convert \
     -size 1224x1584 xc:white \
     -gravity center \( page4fig.png -resize 1194x1554 \) -composite \
     -gravity NorthEast -pointsize 24 -annotate +20+50 "hippoAmygLabels (top)" \

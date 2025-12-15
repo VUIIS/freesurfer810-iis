@@ -33,7 +33,7 @@ for subj_dir in ${subj_dirs}; do
     page2.sh
     page3.sh
     page4.sh
-    magick \
+    convert \
         "${tmp_dir}"/page1.png \
         "${tmp_dir}"/page2.png \
         "${tmp_dir}"/page3.png \
@@ -48,10 +48,10 @@ export label_info="${label_info_orig}"
 
 
 mkdir -p "${out_dir}"/PDF
-magick \
+convert \
     "${tmp_dir}"/Freesurfer-QA-???.pdf \
     "${out_dir}"/PDF/Freesurfer-QA.pdf
 
-magick \
+convert \
     "${tmp_dir}"/Freesurfer-QA-detailed-???.pdf \
     "${out_dir}"/PDF_DETAIL/Freesurfer-QA-detailed.pdf
