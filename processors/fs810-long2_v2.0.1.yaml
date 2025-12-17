@@ -49,9 +49,9 @@ inputs:
 outputs:
   - {path: PDF/Freesurfer-QA.pdf, type: FILE, resource: PDF}
   - {path: PDF_DETAIL, type: DIR, resource: PDF_DETAIL}
-  - {path: v000mo.long.template2, type: DIR, resource: v000mo_long}
-  - {path: v024mo.long.template2, type: DIR, resource: v024mo_long}
-  - {path: template2, type: DIR, resource: template}
+  - {path: v000mo.long.template2, type: DIR, resource: v000mo.long.template2}
+  - {path: v024mo.long.template2, type: DIR, resource: v024mo.long.template2}
+  - {path: template2, type: DIR, resource: template2}
   - {path: APARCSTATS_BA_exvivo, type: DIR, resource: APARCSTATS_BA_exvivo}
   - {path: APARCSTATS_DKTatlas, type: DIR, resource: APARCSTATS_DKTatlas}
   - {path: APARCSTATS_a2009s, type: DIR, resource: APARCSTATS_a2009s}
