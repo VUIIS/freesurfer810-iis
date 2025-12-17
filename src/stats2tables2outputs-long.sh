@@ -75,22 +75,22 @@ for subj_dir in ${subj_dirs}; do
     (( c ++ ))
     cstr=$(printf "%03d" ${c})
 
-    ./process_brainstem_volumes_long.py \
+    process_brainstem_volumes_long.py \
         --subject_dir "${SUBJECTS_DIR}/${subj_dir}" \
         --timepoint ${subj_dir} \
         --out_csv "${out_dir}"/BSvol-${cstr}.csv
 
-    ./process_hippamyg_volumes_long.py \
+    process_hippamyg_volumes_long.py \
         --subject_dir "${SUBJECTS_DIR}/${subj_dir}" \
         --timepoint ${subj_dir} \
         --out_csv "${out_dir}"/HAvol-${cstr}.csv
 
-    ./process_thalamus_volumes_long.py \
+    process_thalamus_volumes_long.py \
         --subject_dir "${SUBJECTS_DIR}/${subj_dir}" \
         --timepoint ${subj_dir} \
         --out_csv "${out_dir}"/TNvol-${cstr}.csv
 
-    ./compute_MM_volumes_long.py \
+    compute_MM_volumes_long.py \
         --havol_csv "${out_dir}"/HAvol-${cstr}.csv \
         --timepoint ${subj_dir} \
         --out_csv "${out_dir}"/MMhippvol-${cstr}.csv
