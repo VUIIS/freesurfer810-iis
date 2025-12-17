@@ -40,7 +40,7 @@ for subj_dir in ${subj_dirs}; do
         "${tmp_dir}"/page4.png \
         "${tmp_dir}"/Freesurfer-QA-${cstr}.pdf
 
-    make_slice_screenshots.sh
+    make_slice_screenshots_long.sh
     mv "${out_dir}"/PDF_DETAIL/Freesurfer-QA-detailed.pdf "${tmp_dir}"/Freesurfer-QA-detailed-${cstr}.pdf 
 
 done

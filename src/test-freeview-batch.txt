@@ -1,0 +1,6 @@
+-viewsize 600 600 --layout 1 --viewport 3d --hide-3d-slices
+-f surf/rh.pial:annot=aparc
+-zoom 1.15 
+-cam azimuth 180 
+-ss rh_lat_aparc.png -noquit
+-quit
