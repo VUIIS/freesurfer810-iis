@@ -25,7 +25,9 @@ inputs:
       - types: v000mo
         scans:
           - name: scan_t1_1
-            types: 'cs_T1W_3D_TFE_32 channel'
+            types: cs_T1W_3D_TFE_32 channel,T1,T1_PGPP
+            skip_unusable: true
+            keep_multis: first
         assessors:
           - name: assr_fs_1
             types: freesurfer800_v2
@@ -35,7 +37,9 @@ inputs:
       - types: v024mo
         scans:
           - name: scan_t1_2
-            types: 'cs_T1W_3D_TFE_32 channel'
+            types: cs_T1W_3D_TFE_32 channel,T1,T1_PGPP
+            skip_unusable: true
+            keep_multis: first
         assessors:
           - name: assr_fs_2
             types: freesurfer800_v2
