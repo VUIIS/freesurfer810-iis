@@ -177,7 +177,7 @@ for roi in rois:
     mask = [x==roi for x in aparc.columns]
     if sum(mask)==0:
         print(f'  WARNING - no volume found for ROI {roi}')
-        vals[roi] = numpy.zeros(vals[roi].shape)
+        vals[roi] = numpy.zeros(vals.timepoint.shape)
     elif sum(mask)>1:
         raise Exception(f'Found >1 value for {roi}')
     else:
