@@ -1,0 +1,5 @@
+Matlab functions in the dir src are from $FREESURFER_HOME/matlab to be compiled 
+for use with Matlab Compiled Runtime.
+
+Source build stamp: freesurfer-linux-rocky8_x86_64-8.1.0-20250718-f30dfed
+
