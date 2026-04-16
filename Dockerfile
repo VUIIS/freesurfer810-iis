@@ -1,6 +1,6 @@
 FROM rockylinux:8.9
 
-# We need a few additional packages for installations, xvfb, imagemagick, freesurfer
+# We need a few additional packages for installations, xvfb, imagemagick, freesurfer, matlab
 # procps-ng provides uptime
 RUN yum -y update && \
     yum -y install findutils wget zip unzip which procps-ng python3 && \
@@ -8,6 +8,7 @@ RUN yum -y update && \
     yum -y install ImageMagick && \
     yum -y install xorg-x11-server-Xvfb xorg-x11-xauth && \
     yum -y install procps-ng mesa-libGLU fontconfig libtiff mesa-dri-drivers && \
+    yum -y install java-1.8.0-openjdk && \
     yum clean all
 
 # FS RPM package
@@ -56,10 +57,27 @@ RUN cd /opt && \
 # Add modules to system python
 RUN pip3 install pandas nibabel numpy scipy
 
+# Matlab Compiled Runtime
+RUN wget -nv https://ssd.mathworks.com/supportfiles/downloads/R2023a/Release/6/deployment_files/installer/complete/glnxa64/MATLAB_Runtime_R2023a_Update_6_glnxa64.zip \
+    -O /opt/mcr_installer.zip && \
+    unzip /opt/mcr_installer.zip -d /opt/mcr_installer && \
+    /opt/mcr_installer/install -mode silent -agreeToLicense yes && \
+    rm -r /opt/mcr_installer /opt/mcr_installer.zip
+
+# Matlab env
+ENV MATLAB_SHELL=/bin/bash
+ENV AGREE_TO_MATLAB_RUNTIME_LICENSE=yes
+ENV MATLAB_RUNTIME=/usr/local/MATLAB/MATLAB_Runtime/R2023a
+ENV MCR_INHIBIT_CTF_LOCK=1
+ENV MCR_CACHE_ROOT=/tmp
+
 # And add our own code for custom post-processing and QC
 COPY README.md /opt/fs-extensions/
 COPY src /opt/fs-extensions/src
-ENV PATH /opt/fs-extensions/src:${PATH}
+ENV PATH /opt/fs-extensions/src:/opt/fs-extensions/matlab/bin:${PATH}
+
+# Matlab executable must be run at build to extract the CTF archive
+RUN run_matlab_entrypoint.sh ${MATLAB_RUNTIME} quit
 
 # Entrypoint
 ENTRYPOINT ["run-everything.sh"]
