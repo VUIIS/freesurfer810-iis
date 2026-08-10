@@ -1,16 +1,22 @@
-# https://github.com/baxpr/freesurfer800-iis
+# https://github.com/baxpr/freesurfer810-iis
 ---
 procyamlversion: 3.0.0-dev.0
 containers:
   - name: freesurfer
-    path: freesurfer800-iis_v2.0.3.sif
-    source: docker://baxterprogers/freesurfer800-iis:v2.0.3
+    path: freesurfer810-iis_v1.0.0.sif
+    source: docker://baxterprogers/freesurfer810-iis:v1.0.0
 requirements:
   walltime: 2-0
   memory: 32G
 jobtemplate: job_template_v3.txt
 inputs:
   xnat:
+    filters:
+      - type: match
+        inputs: scan_mp2rage,assr_mp2rage/scan_mp2rage
+    scans:
+      - name: scan_mp2rage
+        types: MP2RAGE_0p9mm_1sTI_autoshim,'Post MP2RAGE_0p9mm_1sTI_autoshim'
     assessors:
       - name: assr_mp2rage
         types: mp2rage-only_v3
@@ -20,7 +26,7 @@ inputs:
       - {varname: project, object: assessor, attr: project}
       - {varname: subject, object: session, attr: subject_label}
       - {varname: session, object: session, attr: label}
-      - {varname: scan, object: scan, attr: ID, ref: scan_t1}
+      - {varname: scan, object: scan, attr: ID, ref: scan_mp2rage}
 outputs:
   - {path: PDF/Freesurfer-QA.pdf, type: FILE, resource: PDF}
   - {path: PDF_DETAIL, type: DIR, resource: PDF_DETAIL}
@@ -44,7 +50,7 @@ command:
     --bind $OUTDIR:/OUTPUTS
     --bind $JOBDIR:/tmp
   extraopts: >-
-    --bind /data/mcr/centos7/FS6/license.txt:/usr/local/freesurfer/8.0.0-1/.license
+    --bind /data/mcr/centos7/FS6/license.txt:/usr/local/freesurfer/8.1.0-1/.license
   args: >-
     --t1_niigz /INPUTS/t1.nii.gz
     --subjects_dir /OUTPUTS
