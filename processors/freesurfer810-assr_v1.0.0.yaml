@@ -16,7 +16,7 @@ inputs:
         inputs: scan_mp2rage,assr_mp2rage/scan_mp2rage
     scans:
       - name: scan_mp2rage
-        types: MP2RAGE_0p9mm_1sTI_autoshim,'Post MP2RAGE_0p9mm_1sTI_autoshim'
+        types: MP2RAGE_0p9mm_1sTI_autoshim,"Post MP2RAGE_0p9mm_1sTI_autoshim"
     assessors:
       - name: assr_mp2rage
         types: mp2rage-only_v3
