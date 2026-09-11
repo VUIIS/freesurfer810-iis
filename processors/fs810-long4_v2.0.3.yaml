@@ -106,7 +106,7 @@ command:
     --bind $OUTDIR:/OUTPUTS
     --bind $JOBDIR:/tmp
   extraopts: >-
-    --bind /data/mcr/centos7/FS6/license.txt:/usr/local/freesurfer/8.1.0-1/.license
+    --bind /data/mcr/rocky9/FS/license.txt:/usr/local/freesurfer/8.1.0-1/license.txt
   args: >-
     bash -c \"
     export SUBJECTS_DIR=/OUTPUTS &&
