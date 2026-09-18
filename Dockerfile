@@ -82,11 +82,13 @@ RUN yum -y install \
 COPY xorg-dummy.conf /opt/
 COPY README.md /opt/fs-extensions/
 COPY src /opt/fs-extensions/src
-COPY matlab /opt/fs-extensions/matlab
-ENV PATH /opt/fs-extensions/src:/opt/fs-extensions/matlab/bin:${PATH}
+ENV PATH /opt/fs-extensions/src:${PATH}
 
 # Matlab executable must be run at build to extract the CTF archive
-RUN run_matlab_entrypoint.sh ${MATLAB_RUNTIME} quit
+# Skipped, this prevents use of LGI etc.
+#COPY matlab /opt/fs-extensions/matlab
+#ENV PATH /opt/fs-extensions/matlab/bin:${PATH}
+#RUN run_matlab_entrypoint.sh ${MATLAB_RUNTIME} quit
 
 # Entrypoint
 ENTRYPOINT ["run-everything.sh"]
