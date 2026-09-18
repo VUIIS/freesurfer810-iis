@@ -82,6 +82,7 @@ RUN yum -y install \
 COPY xorg-dummy.conf /opt/
 COPY README.md /opt/fs-extensions/
 COPY src /opt/fs-extensions/src
+COPY matlab /opt/fs-extensions/src
 ENV PATH /opt/fs-extensions/src:/opt/fs-extensions/matlab/bin:${PATH}
 
 # Matlab executable must be run at build to extract the CTF archive
