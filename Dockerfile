@@ -71,10 +71,9 @@ ENV MATLAB_RUNTIME=/usr/local/MATLAB/MATLAB_Runtime/R2023a
 ENV MCR_INHIBIT_CTF_LOCK=1
 ENV MCR_CACHE_ROOT=/tmp
 
-# Additional packages for Xorg
+# Additional packages for X
 RUN yum -y install \
-    xorg-x11-server-Xorg xorg-x11-drv-dummy xorg-x11-utils \
-    xorg-x11-fonts-Type1 xorg-x11-fonts-misc \
+    xorg-x11-utils xorg-x11-fonts-Type1 xorg-x11-fonts-misc \
     mesa-libGL mesa-libEGL mesa-libGLES \
     && yum clean all
 
