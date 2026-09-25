@@ -1,0 +1,103 @@
+# https://github.com/baxpr/freesurfer810-iis
+---
+procyamlversion: 3.0.0-dev.0
+
+containers:
+  - name: freesurfer
+    path: freesurfer810-iis_v2.0.3.sif
+    source: docker://baxterprogers/freesurfer810-iis:v2.0.3
+requirements:
+  walltime: 7-0
+  memory: 64G
+jobtemplate: job_template_v3.txt
+
+inputs:
+  xnat:
+
+    filters:
+      - type: match
+        inputs: scan_t1_1,assr_fs_1/scan_t1
+      - type: match
+        inputs: scan_t1_2,assr_fs_2/scan_t1
+
+    sessions:
+
+      - types: v000mo
+        scans:
+          - name: scan_t1_1
+            types: cs_T1W_3D_TFE_32 channel,T1,T1_PGPP
+            skip_unusable: true
+            keep_multis: first
+        assessors:
+          - name: assr_fs_1
+            types: freesurfer800_v2
+            resources:
+              - {resource: SUBJECT, ftype: DIR, fdest: v000mo}
+
+      - types: v120mo
+        scans:
+          - name: scan_t1_2
+            types: cs_T1W_3D_TFE_32 channel,T1,T1_PGPP
+            skip_unusable: true
+            keep_multis: first
+        assessors:
+          - name: assr_fs_2
+            types: freesurfer800_v2
+            resources:
+              - {resource: SUBJECT, ftype: DIR, fdest: v120mo}
+
+
+    attrs:
+      - {varname: project, object: assessor, attr: project}
+      - {varname: subject, object: assessor, attr: subject_label}
+
+outputs:
+  - {path: PDF/Freesurfer-QA.pdf, type: FILE, resource: PDF}
+  - {path: PDF_DETAIL, type: DIR, resource: PDF_DETAIL}
+  - {path: v000mo.long.template2, type: DIR, resource: v000mo.long.template2}
+  - {path: v120mo.long.template2, type: DIR, resource: v120mo.long.template2}
+  - {path: template2, type: DIR, resource: template2}
+  - {path: APARCSTATS_BA_exvivo, type: DIR, resource: APARCSTATS_BA_exvivo}
+  - {path: APARCSTATS_DKTatlas, type: DIR, resource: APARCSTATS_DKTatlas}
+  - {path: APARCSTATS_a2009s, type: DIR, resource: APARCSTATS_a2009s}
+  - {path: APARCSTATS_aparc, type: DIR, resource: APARCSTATS_aparc}
+  - {path: APARCSTATS_pial, type: DIR, resource: APARCSTATS_pial}
+  - {path: VOLSTATS_std, type: DIR, resource: VOLSTATS_std}
+  - {path: VOLSTATS_highres, type: DIR, resource: VOLSTATS_highres}
+  - {path: SCLIMBIC_QA, type: DIR, resource: SCLIMBIC_QA}
+
+
+command:
+  type: singularity_exec
+  container: freesurfer
+  opts: >-
+    --home $JOBDIR
+    --bind $INDIR:/INPUTS
+    --bind $OUTDIR:/OUTPUTS
+    --bind $JOBDIR:/tmp
+  extraopts: >-
+    --bind /data/mcr/rocky9/FS/license.txt:/usr/local/freesurfer/8.1.0-1/license.txt
+  args: >-
+    bash -c \"
+    export SUBJECTS_DIR=/OUTPUTS &&
+    cp -R /INPUTS/v000mo/SUBJECT /OUTPUTS/v000mo &&
+    cp -R /INPUTS/v120mo/SUBJECT /OUTPUTS/v120mo &&
+    recon-all
+      -base template2
+      -tp v000mo
+      -tp v120mo
+      -hires -all &&
+    recon-all -long v000mo template2 -all &&
+    recon-all -long v120mo template2 -all &&
+    segment_subregions hippo-amygdala --long-base template2 &&
+    segment_subregions thalamus --long-base template2 &&
+    segment_subregions brainstem --long-base template2 &&
+    mri_sclimbic_seg -s
+      v000mo.long.template2
+      v120mo.long.template2 
+      --conform --write_qa_stats &&
+    postproc-entrypoint-long.sh
+      --subjects_dir /OUTPUTS
+      --label_info "{project} {subject}"
+      --out_dir /OUTPUTS
+    \"
